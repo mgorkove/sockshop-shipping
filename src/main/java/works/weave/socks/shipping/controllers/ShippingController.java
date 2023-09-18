@@ -39,6 +39,8 @@ public class ShippingController {
     @ResponseBody
     Shipment postShipping(@RequestBody Shipment shipment) {
         System.out.println("Adding shipment to queue...");
+        LOG.debug("Received shipment data: " + shipment.toString());
+        shipment.setId(shipment.getCustomerId().toUpperCase());
         try {
             rabbitTemplate.convertAndSend("shipping-task", shipment);
         } catch (Exception e) {
